@@ -1,5 +1,7 @@
 # Cookit - Backend
 
+[![Build Status](https://travis-ci.org/DaniVillegas14/cookit-backend.svg?branch=master)](https://travis-ci.org/DaniVillegas14/cookit-backend)
+
 Cookit es una plataforma que le permite a los usuarios poder buscar las recetas de sus comidas preferidas.
 
 ## Prerrequisitos
