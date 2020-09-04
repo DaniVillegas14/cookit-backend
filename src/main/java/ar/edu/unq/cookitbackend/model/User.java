@@ -3,6 +3,7 @@ package ar.edu.unq.cookitbackend.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,5 +20,6 @@ public class User extends BaseEntity {
     @Column(name = "imagen_url")
     private String imageUrl;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Recipe> recipes;
+    @Builder.Default
+    private List<Recipe> recipes = new ArrayList<>();
 }
