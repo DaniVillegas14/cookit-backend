@@ -3,7 +3,7 @@ package ar.edu.unq.cookitbackend.service.impl;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.User;
-import ar.edu.unq.cookitbackend.repository.UserRepository;
+import ar.edu.unq.cookitbackend.persistence.UserRepository;
 import ar.edu.unq.cookitbackend.service.IAuthService;
 import ar.edu.unq.cookitbackend.utils.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
