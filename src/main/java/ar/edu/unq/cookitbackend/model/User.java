@@ -19,7 +19,6 @@ public class User extends BaseEntity {
     private String lastname;
     @Column(name = "imagen_url")
     private String imageUrl;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    @Builder.Default
-    private List<Recipe> recipes = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+//    private List<Recipe> recipes;
 }
