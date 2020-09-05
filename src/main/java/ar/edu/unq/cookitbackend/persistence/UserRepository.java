@@ -1,4 +1,4 @@
-package ar.edu.unq.cookitbackend.repository;
+package ar.edu.unq.cookitbackend.persistence;
 
 import ar.edu.unq.cookitbackend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
