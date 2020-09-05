@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
 
     @GetMapping
-    public String test(@RequestParam("id") String id) {
+    public String test() {
         return "Probando 123...";
     }
 }
