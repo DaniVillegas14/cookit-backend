@@ -21,6 +21,6 @@ public class User extends BaseEntity {
     private String lastname;
     @Column(name = "imagen_url")
     private String imageUrl;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<Recipe> recipes;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+//    private List<Recipe> recipes;
 }
