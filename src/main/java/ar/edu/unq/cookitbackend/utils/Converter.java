@@ -3,10 +3,12 @@ package ar.edu.unq.cookitbackend.utils;
 import ar.edu.unq.cookitbackend.dto.request.IngredientDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
+import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
 import ar.edu.unq.cookitbackend.model.Ingredient;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,5 +46,20 @@ public class Converter {
                 .stream()
                 .map(Converter::toIngredient)
                 .collect(Collectors.toList());
+    }
+
+    public static List<RecipeResponseDto> toListRecipeResponseDto(List<Recipe> recipes) {
+        List<RecipeResponseDto> result = new ArrayList<>();
+
+        recipes.forEach(recipe -> result.add(Converter.toRecipeResponseDto(recipe)));
+
+        return result;
+    }
+
+    private static RecipeResponseDto toRecipeResponseDto(Recipe recipe) {
+        return RecipeResponseDto.builder()
+                .name(recipe.getName())
+                .imageUrl(recipe.getImageUrl())
+                .build();
     }
 }
