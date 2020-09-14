@@ -1,6 +1,8 @@
 package ar.edu.unq.cookitbackend.service.impl;
 
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
+import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
+import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
 import ar.edu.unq.cookitbackend.service.IRecipes;
@@ -26,5 +28,16 @@ public class RecipeService implements IRecipes {
     @Override
     public Recipe createRecipe(RecipeDto recipeDto) {
         return recipeRepository.save(Converter.toRecipe(recipeDto));
+    }
+
+    @Override
+    public List<RecipeResponseDto> getRecipesByQuery(String query) throws NotFoundException {
+        List<Recipe> recipes = recipeRepository.findRecipesByQuery(query);
+
+        if (recipes.isEmpty()) {
+            throw new NotFoundException("No se encontraron resultados para " + query);
+        }
+
+        return Converter.toListRecipeResponseDto(recipes);
     }
 }

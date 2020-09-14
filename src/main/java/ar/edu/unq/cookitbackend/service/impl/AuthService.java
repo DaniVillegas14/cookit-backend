@@ -22,7 +22,7 @@ public class AuthService implements IAuthService {
         User user = userRepository.findByEmail(request.getEmail());
 
         if(user != null) {
-            throw new NotFoundException("Ya existe el usuario");
+            throw new NotFoundException("Usuario no encontrado");
         }
 
         userRepository.save(Converter.toUser(request));
