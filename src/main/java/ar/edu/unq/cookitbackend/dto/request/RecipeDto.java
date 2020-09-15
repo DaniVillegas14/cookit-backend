@@ -13,4 +13,5 @@ public class RecipeDto {
     private String name;
     private String image_url;
     private List<IngredientDto> ingredients;
+    private List<StepDto> steps;
 }

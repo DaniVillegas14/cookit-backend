@@ -18,7 +18,7 @@ public class Ingredient extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
     @ManyToOne
-    @JoinColumn(name = "receta_id")
+    @JoinColumn(name = "recipe_id")
     @JsonIgnore
     private Recipe recipe;
 }
