@@ -8,6 +8,7 @@ import lombok.Setter;
 public class RecipeResponseDto {
 
     private String name;
+    private String description;
     private String imageUrl;
 
 }

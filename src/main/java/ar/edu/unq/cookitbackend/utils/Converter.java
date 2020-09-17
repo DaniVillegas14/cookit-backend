@@ -73,6 +73,7 @@ public class Converter {
     private static RecipeResponseDto toRecipeResponseDto(Recipe recipe) {
         return RecipeResponseDto.builder()
                 .name(recipe.getName())
+                .description(recipe.getDescription())
                 .imageUrl(recipe.getImageUrl())
                 .build();
     }
