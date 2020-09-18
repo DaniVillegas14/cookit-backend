@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
-@Table(name="usuario")
+@Table(name="user")
 public class User extends BaseEntity {
 
     @Column(name = "email", nullable = false)
@@ -19,6 +19,7 @@ public class User extends BaseEntity {
     private String lastname;
     @Column(name = "imagen_url")
     private String imageUrl;
+
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 //    private List<Recipe> recipes;
 }
