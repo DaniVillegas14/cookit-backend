@@ -11,4 +11,5 @@ public interface IRecipes {
     List<Recipe> getAllRecipes();
     Recipe createRecipe(RecipeDto recipeDto);
     List<RecipeResponseDto> getRecipesByQuery(String query) throws NotFoundException;
+    Recipe getRecipe(Long id);
 }
