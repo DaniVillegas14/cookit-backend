@@ -2,6 +2,7 @@ package ar.edu.unq.cookitbackend.controller;
 
 import ar.edu.unq.cookitbackend.dto.request.LoginRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
+import ar.edu.unq.cookitbackend.dto.response.JwtResponse;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.service.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class AuthController {
     }
 
     @PostMapping("/login/social")
-    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
-        authService.login(request);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequestDto request) {
+        JwtResponse response = authService.loginSocial(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
