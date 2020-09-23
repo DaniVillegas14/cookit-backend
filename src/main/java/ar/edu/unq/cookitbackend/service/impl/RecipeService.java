@@ -40,4 +40,9 @@ public class RecipeService implements IRecipes {
 
         return Converter.toListRecipeResponseDto(recipes);
     }
+
+    @Override
+    public Recipe getRecipe(Long id) {
+        return recipeRepository.findById(id).orElse(new Recipe());
+    }
 }

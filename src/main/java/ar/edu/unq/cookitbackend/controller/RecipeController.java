@@ -25,6 +25,11 @@ public class RecipeController {
         return new ResponseEntity<>(recipeService.getAllRecipes(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable ("id") Long id) {
+        return new ResponseEntity<>(recipeService.getRecipe(id), HttpStatus.OK);
+    }
+
     @PostMapping("/new")
     public ResponseEntity<Recipe> addNewRecipe(@RequestBody RecipeDto recipeDto) {
         Recipe recipe = recipeService.createRecipe(recipeDto);
