@@ -3,21 +3,19 @@ package ar.edu.unq.cookitbackend.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
-@Table(name="user")
+@Table(name="usuario")
 public class User extends BaseEntity {
 
     @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "apellido", nullable = false)
+    @Column(name = "lastname", nullable = false)
     private String lastname;
-    @Column(name = "imagen_url")
+    @Column(name = "imageurl")
     private String imageUrl;
 
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

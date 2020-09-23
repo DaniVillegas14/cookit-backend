@@ -22,11 +22,9 @@ public class AuthController {
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(
-            @RequestHeader (value = "token") String token,
-            @RequestBody LoginRequestDto request) {
-        authService.login(token, request);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+    @PostMapping("/login/social")
+    public ResponseEntity<String> login(@RequestBody LoginRequestDto request) {
+        authService.login(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

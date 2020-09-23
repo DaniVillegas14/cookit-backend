@@ -7,5 +7,5 @@ import ar.edu.unq.cookitbackend.exception.NotFoundException;
 public interface IAuthService {
 
     void register(UserRequestDto request) throws NotFoundException;
-    void login(String token, LoginRequestDto request);
+    void login(LoginRequestDto request);
 }
