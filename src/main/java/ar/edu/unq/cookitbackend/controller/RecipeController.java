@@ -6,12 +6,15 @@ import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.service.IRecipes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/recipes")
@@ -21,8 +24,9 @@ public class RecipeController {
     private IRecipes recipeService;
 
     @GetMapping
-    public ResponseEntity<List<Recipe>> getAll() {
-        return new ResponseEntity<>(recipeService.getAllRecipes(), HttpStatus.OK);
+    public ResponseEntity<Page<Recipe>> getAll(@RequestParam ("search") Optional<String> search,
+                                               Pageable pageable) {
+        return new ResponseEntity<>(recipeService.getAllRecipes(search, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -34,11 +38,5 @@ public class RecipeController {
     public ResponseEntity<Recipe> addNewRecipe(@RequestBody RecipeDto recipeDto) {
         Recipe recipe = recipeService.createRecipe(recipeDto);
         return new ResponseEntity<>(recipe, HttpStatus.OK);
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<RecipeResponseDto>> search(@RequestParam ("query") String query) throws NotFoundException {
-        List<RecipeResponseDto> response = recipeService.getRecipesByQuery(query);
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
