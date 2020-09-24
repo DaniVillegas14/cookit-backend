@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/recipes")
@@ -23,7 +24,7 @@ public class RecipeController {
     private IRecipes recipeService;
 
     @GetMapping
-    public ResponseEntity<Page<Recipe>> getAll(@RequestParam ("search") String search,
+    public ResponseEntity<Page<Recipe>> getAll(@RequestParam ("search") Optional<String> search,
                                                Pageable pageable) {
         return new ResponseEntity<>(recipeService.getAllRecipes(search, pageable), HttpStatus.OK);
     }
@@ -37,11 +38,5 @@ public class RecipeController {
     public ResponseEntity<Recipe> addNewRecipe(@RequestBody RecipeDto recipeDto) {
         Recipe recipe = recipeService.createRecipe(recipeDto);
         return new ResponseEntity<>(recipe, HttpStatus.OK);
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<RecipeResponseDto>> search(@RequestParam ("query") String query) throws NotFoundException {
-        List<RecipeResponseDto> response = recipeService.getRecipesByQuery(query);
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

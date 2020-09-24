@@ -12,9 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,25 +24,14 @@ public class RecipeService implements IRecipes {
     RecipeRepository recipeRepository;
 
     @Override
-    public Page<Recipe> getAllRecipes(String search,
+    public Page<Recipe> getAllRecipes(Optional<String> search,
                                       Pageable pageable) {
-        return recipeRepository.findAllBy(search, pageable);
+        return recipeRepository.findAllBy(search.orElse(""), pageable);
     }
 
     @Override
     public Recipe createRecipe(RecipeDto recipeDto) {
         return recipeRepository.save(Converter.toRecipe(recipeDto));
-    }
-
-    @Override
-    public List<RecipeResponseDto> getRecipesByQuery(String query) throws NotFoundException {
-        List<Recipe> recipes = recipeRepository.findRecipesByQuery(query);
-
-        if (recipes.isEmpty()) {
-            throw new NotFoundException("No se encontraron resultados para " + query);
-        }
-
-        return Converter.toListRecipeResponseDto(recipes);
     }
 
     @Override

@@ -8,10 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IRecipes {
-    Page<Recipe> getAllRecipes(String search, Pageable pageable);
+    Page<Recipe> getAllRecipes(Optional<String> search, Pageable pageable);
     Recipe createRecipe(RecipeDto recipeDto);
-    List<RecipeResponseDto> getRecipesByQuery(String query) throws NotFoundException;
     Recipe getRecipe(Long id);
 }
