@@ -1,8 +1,11 @@
 package ar.edu.unq.cookitbackend.model;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,6 +23,8 @@ public class Recipe extends BaseEntity {
     private int comensales;
     @Column(name = "time", nullable = false)
     private int time;
+    @CreationTimestamp
+    private LocalDateTime created_at;
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Ingredient> ingredients;
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
