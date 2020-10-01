@@ -1,4 +1,4 @@
-package ar.edu.unq.cookitbackend;
+package ar.edu.unq.cookitbackend.model;
 
 import ar.edu.unq.cookitbackend.model.Ingredient;
 import ar.edu.unq.cookitbackend.model.Recipe;
