@@ -1,4 +1,4 @@
-package ar.edu.unq.cookitbackend;
+package ar.edu.unq.cookitbackend.model;
 
 import ar.edu.unq.cookitbackend.model.User;
 import org.junit.jupiter.api.Test;
