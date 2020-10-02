@@ -1,6 +1,7 @@
 package ar.edu.unq.cookitbackend.controller;
 
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
+import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.security.JwtAuthenticationEntryPoint;
 import ar.edu.unq.cookitbackend.security.JwtRequestFilter;
@@ -63,8 +64,7 @@ public class RecipeControllerTest {
     public void testShouldFetchRecipeById() throws Exception {
         Long recipeId = 1L;
 
-        Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        RecipeResponseDto recipe = new RecipeResponseDto();
         recipe.setName("Tarta de frutillas");
         recipe.setDescription("Para aprovechar las frutillas de estacion. En este caso la hice doble porque somos muchos, pero se puede hacer la mitad y sale una tarta redonda convencional.");
         recipe.setImageUrl("https://img-global.cpcdn.com/recipes/424565f2d5a5103c/751x532cq70/tarta-de-frutillas-foto-principal.jpg");

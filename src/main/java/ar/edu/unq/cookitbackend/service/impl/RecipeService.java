@@ -35,7 +35,10 @@ public class RecipeService implements IRecipes {
     }
 
     @Override
-    public Recipe getRecipe(Long id) {
-        return recipeRepository.findById(id).orElse(new Recipe());
+    public RecipeResponseDto getRecipe(Long id) throws NotFoundException {
+        Recipe recipe = recipeRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Receta no encontrada"));
+
+        return Converter.toRecipeResponseDto(recipe);
     }
 }

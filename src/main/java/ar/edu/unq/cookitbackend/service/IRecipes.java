@@ -13,5 +13,5 @@ import java.util.Optional;
 public interface IRecipes {
     Page<Recipe> getAllRecipes(Optional<String> search, Pageable pageable);
     Recipe createRecipe(RecipeDto recipeDto);
-    Recipe getRecipe(Long id);
+    RecipeResponseDto getRecipe(Long id) throws NotFoundException;
 }

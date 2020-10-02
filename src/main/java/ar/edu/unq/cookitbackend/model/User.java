@@ -3,6 +3,7 @@ package ar.edu.unq.cookitbackend.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
@@ -17,7 +18,8 @@ public class User extends BaseEntity {
     private String lastname;
     @Column(name = "imageurl")
     private String imageUrl;
-
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Comment> comments;
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 //    private List<Recipe> recipes;
 }
