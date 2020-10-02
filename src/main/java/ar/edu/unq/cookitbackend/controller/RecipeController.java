@@ -30,7 +30,7 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable ("id") Long id) {
+    public ResponseEntity<RecipeResponseDto> getRecipeById(@PathVariable ("id") Long id) throws NotFoundException {
         return new ResponseEntity<>(recipeService.getRecipe(id), HttpStatus.OK);
     }
 

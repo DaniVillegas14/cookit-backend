@@ -4,11 +4,10 @@ import ar.edu.unq.cookitbackend.dto.request.IngredientDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.request.StepDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
+import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
-import ar.edu.unq.cookitbackend.model.Ingredient;
-import ar.edu.unq.cookitbackend.model.Recipe;
-import ar.edu.unq.cookitbackend.model.Step;
-import ar.edu.unq.cookitbackend.model.User;
+import ar.edu.unq.cookitbackend.dto.response.UserCommentResponseDto;
+import ar.edu.unq.cookitbackend.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,11 +69,36 @@ public class Converter {
         return result;
     }
 
-    private static RecipeResponseDto toRecipeResponseDto(Recipe recipe) {
+    public static RecipeResponseDto toRecipeResponseDto(Recipe recipe) {
         return RecipeResponseDto.builder()
                 .name(recipe.getName())
                 .description(recipe.getDescription())
                 .imageUrl(recipe.getImageUrl())
+                .comensales(recipe.getComensales())
+                .time(recipe.getTime())
+                .created_at(recipe.getCreated_at())
+                .ingredients(recipe.getIngredients())
+                .steps(recipe.getSteps())
+                .comments(toCommentResponseDto(recipe.getComments()))
+                .build();
+    }
+
+    private static List<CommentResponseDto> toCommentResponseDto(List<Comment> comments) {
+        return comments.stream().map(Converter::toCommentDto).collect(Collectors.toList());
+    }
+
+    private static CommentResponseDto toCommentDto(Comment comment) {
+        return CommentResponseDto.builder()
+                .message(comment.getMessage())
+                .created_at(comment.getCreated_at())
+                .userCommentResponseDto(toUserCommentResponseDto(comment.getUser()))
+                .build();
+    }
+
+    private static UserCommentResponseDto toUserCommentResponseDto(User user) {
+        return UserCommentResponseDto.builder()
+                .name(user.getName())
+                .imageUrl(user.getImageUrl())
                 .build();
     }
 }
