@@ -1,14 +1,12 @@
 package ar.edu.unq.cookitbackend.utils;
 
-import ar.edu.unq.cookitbackend.dto.request.IngredientDto;
-import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
-import ar.edu.unq.cookitbackend.dto.request.StepDto;
-import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
+import ar.edu.unq.cookitbackend.dto.request.*;
 import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.UserCommentResponseDto;
 import ar.edu.unq.cookitbackend.model.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,7 +89,7 @@ public class Converter {
         return CommentResponseDto.builder()
                 .message(comment.getMessage())
                 .created_at(comment.getCreated_at())
-                .userCommentResponseDto(toUserCommentResponseDto(comment.getUser()))
+                .owner(toUserCommentResponseDto(comment.getOwner()))
                 .build();
     }
 
@@ -99,6 +97,15 @@ public class Converter {
         return UserCommentResponseDto.builder()
                 .name(user.getName())
                 .imageUrl(user.getImageUrl())
+                .build();
+    }
+
+    public static Comment toComment(String message, Recipe recipe, User owner) {
+        return Comment.builder()
+                .message(message)
+                .created_at(LocalDateTime.now())
+                .recipe(recipe)
+                .owner(owner)
                 .build();
     }
 }

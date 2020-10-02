@@ -20,5 +20,5 @@ public class Comment extends BaseEntity {
     private Recipe recipe;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
-    private User user;
+    private User owner;
 }
