@@ -7,6 +7,7 @@ import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.UserCommentResponseDto;
+import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
 import ar.edu.unq.cookitbackend.model.*;
 
 import java.util.ArrayList;
@@ -98,6 +99,16 @@ public class Converter {
     private static UserCommentResponseDto toUserCommentResponseDto(User user) {
         return UserCommentResponseDto.builder()
                 .name(user.getName())
+                .imageUrl(user.getImageUrl())
+                .build();
+    }
+
+    public static UserResponseDto toUserResponseDto(User user) {
+        return UserResponseDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName())
+                .lastname(user.getLastname())
                 .imageUrl(user.getImageUrl())
                 .build();
     }
