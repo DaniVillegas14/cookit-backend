@@ -29,9 +29,9 @@ public class Recipe extends BaseEntity {
     private List<Ingredient> ingredients;
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Step> steps;
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false, updatable = false)
-//    private User user;
     @OneToMany(mappedBy = "recipe", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    private User user;
 }
