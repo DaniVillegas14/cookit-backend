@@ -6,11 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
 @Table(name="ingredients")
 public class Ingredient extends BaseEntity {
     @Column(name = "quantity_weight", nullable = false)

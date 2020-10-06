@@ -4,17 +4,14 @@ import ar.edu.unq.cookitbackend.dto.request.IngredientDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.request.StepDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
-import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
-import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
-import ar.edu.unq.cookitbackend.dto.response.UserCommentResponseDto;
-import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
+import ar.edu.unq.cookitbackend.dto.response.*;
 import ar.edu.unq.cookitbackend.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Converter {
+public class Converter<R extends BaseEntity, P> {
 
     public static User toUser(UserRequestDto request) {
         return User.builder()
@@ -62,25 +59,41 @@ public class Converter {
                 .collect(Collectors.toList());
     }
 
-    public static List<RecipeResponseDto> toListRecipeResponseDto(List<Recipe> recipes) {
-        List<RecipeResponseDto> result = new ArrayList<>();
+    public static PageableRecipeResponseDto toPageableRecipeDto(Recipe recipe) {
+        return PageableRecipeResponseDto.builder()
+                .id(recipe.getId())
+                .created_at(recipe.getCreated_at())
+                .description(recipe.getDescription())
+                .imageUrl(recipe.getImageUrl())
+                .name(recipe.getName())
+                .user(convertUserToLittleUserDto(recipe.getUser()))
+                .build();
+    }
 
-        recipes.forEach(recipe -> result.add(Converter.toRecipeResponseDto(recipe)));
-
-        return result;
+    public static LittleUserResponseDto convertUserToLittleUserDto(User user) {
+        return LittleUserResponseDto.builder()
+                .id(user.getId())
+                .imageUrl(user.getImageUrl())
+                .lastname(user.getLastname())
+                .name(user.getName())
+                .build();
     }
 
     public static RecipeResponseDto toRecipeResponseDto(Recipe recipe) {
         return RecipeResponseDto.builder()
-                .name(recipe.getName())
+                .id(recipe.getId())
+                .created_at(recipe.getCreated_at())
+                .comensales(recipe.getComensales())
                 .description(recipe.getDescription())
                 .imageUrl(recipe.getImageUrl())
                 .comensales(recipe.getComensales())
                 .time(recipe.getTime())
                 .created_at(recipe.getCreated_at())
-                .ingredients(recipe.getIngredients())
-                .steps(recipe.getSteps())
                 .comments(toCommentResponseDto(recipe.getComments()))
+                .name(recipe.getName())
+                .ingredients(toIngredientsResponseDto(recipe.getIngredients()))
+                .steps(toStepsResponseDto(recipe.getSteps()))
+                .user(convertUserToLittleUserDto(recipe.getUser()))
                 .build();
     }
 
@@ -110,6 +123,33 @@ public class Converter {
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .imageUrl(user.getImageUrl())
+                .build();
+    }
+
+    public static List<IngredientResponseDto> toIngredientsResponseDto(List<Ingredient> ingredients) {
+        return ingredients
+                .stream()
+                .map(Converter::toIngredientResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public static IngredientResponseDto toIngredientResponseDto(Ingredient ingredient) {
+        return IngredientResponseDto.builder()
+                .name(ingredient.getName())
+                .quantity_weight(ingredient.getQuantity_weight())
+                .build();
+    }
+
+    public static List<StepResponseDto> toStepsResponseDto(List<Step> steps) {
+        return steps
+                .stream()
+                .map(Converter::toStepResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    public static StepResponseDto toStepResponseDto(Step step) {
+        return StepResponseDto.builder()
+                .description(step.getDescription())
                 .build();
     }
 }
