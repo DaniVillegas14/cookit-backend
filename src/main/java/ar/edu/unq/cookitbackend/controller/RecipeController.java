@@ -1,6 +1,8 @@
 package ar.edu.unq.cookitbackend.controller;
 
+import ar.edu.unq.cookitbackend.dto.request.CommentRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
+import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableRecipeResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
@@ -37,5 +39,11 @@ public class RecipeController {
     public ResponseEntity<Recipe> addNewRecipe(@RequestBody RecipeDto recipeDto) {
         Recipe recipe = recipeService.createRecipe(recipeDto);
         return new ResponseEntity<>(recipe, HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto request) throws NotFoundException {
+        CommentResponseDto response = recipeService.createComment(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

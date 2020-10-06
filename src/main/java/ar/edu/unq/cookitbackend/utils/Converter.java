@@ -1,5 +1,8 @@
 package ar.edu.unq.cookitbackend.utils;
 
+import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
+import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
+import ar.edu.unq.cookitbackend.dto.response.UserCommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.request.IngredientDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.request.StepDto;
@@ -7,7 +10,7 @@ import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.*;
 import ar.edu.unq.cookitbackend.model.*;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,7 +92,7 @@ public class Converter<R extends BaseEntity, P> {
                 .comensales(recipe.getComensales())
                 .time(recipe.getTime())
                 .created_at(recipe.getCreated_at())
-                .comments(toCommentResponseDto(recipe.getComments()))
+                .comments(toCommentsResponseDto(recipe.getComments()))
                 .name(recipe.getName())
                 .ingredients(toIngredientsResponseDto(recipe.getIngredients()))
                 .steps(toStepsResponseDto(recipe.getSteps()))
@@ -97,22 +100,31 @@ public class Converter<R extends BaseEntity, P> {
                 .build();
     }
 
-    private static List<CommentResponseDto> toCommentResponseDto(List<Comment> comments) {
-        return comments.stream().map(Converter::toCommentDto).collect(Collectors.toList());
+    public static List<CommentResponseDto> toCommentsResponseDto(List<Comment> comments) {
+        return comments.stream().map(Converter::toCommentResponseDto).collect(Collectors.toList());
     }
 
-    private static CommentResponseDto toCommentDto(Comment comment) {
+    public static CommentResponseDto toCommentResponseDto(Comment comment) {
         return CommentResponseDto.builder()
                 .message(comment.getMessage())
                 .created_at(comment.getCreated_at())
-                .userCommentResponseDto(toUserCommentResponseDto(comment.getUser()))
+                .owner(toUserCommentResponseDto(comment.getOwner()))
                 .build();
     }
 
-    private static UserCommentResponseDto toUserCommentResponseDto(User user) {
+    public static UserCommentResponseDto toUserCommentResponseDto(User user) {
         return UserCommentResponseDto.builder()
                 .name(user.getName())
                 .imageUrl(user.getImageUrl())
+                .build();
+    }
+
+    public static Comment toComment(String message, Recipe recipe, User owner) {
+        return Comment.builder()
+                .message(message)
+                .created_at(LocalDateTime.now())
+                .recipe(recipe)
+                .owner(owner)
                 .build();
     }
 
@@ -152,4 +164,5 @@ public class Converter<R extends BaseEntity, P> {
                 .description(step.getDescription())
                 .build();
     }
+
 }

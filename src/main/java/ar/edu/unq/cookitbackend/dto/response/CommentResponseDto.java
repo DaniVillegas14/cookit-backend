@@ -10,5 +10,5 @@ import java.time.LocalDateTime;
 public class CommentResponseDto {
     private String message;
     private LocalDateTime created_at;
-    private UserCommentResponseDto userCommentResponseDto;
+    private UserCommentResponseDto owner;
 }
