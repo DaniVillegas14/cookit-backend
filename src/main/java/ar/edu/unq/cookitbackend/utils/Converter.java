@@ -92,7 +92,7 @@ public class Converter<R extends BaseEntity, P> {
                 .comensales(recipe.getComensales())
                 .time(recipe.getTime())
                 .created_at(recipe.getCreated_at())
-                .comments(toCommentResponseDto(recipe.getComments()))
+                .comments(toCommentsResponseDto(recipe.getComments()))
                 .name(recipe.getName())
                 .ingredients(toIngredientsResponseDto(recipe.getIngredients()))
                 .steps(toStepsResponseDto(recipe.getSteps()))
@@ -100,11 +100,11 @@ public class Converter<R extends BaseEntity, P> {
                 .build();
     }
 
-    private static List<CommentResponseDto> toCommentResponseDto(List<Comment> comments) {
-        return comments.stream().map(Converter::toCommentDto).collect(Collectors.toList());
+    public static List<CommentResponseDto> toCommentsResponseDto(List<Comment> comments) {
+        return comments.stream().map(Converter::toCommentResponseDto).collect(Collectors.toList());
     }
 
-    private static CommentResponseDto toCommentDto(Comment comment) {
+    public static CommentResponseDto toCommentResponseDto(Comment comment) {
         return CommentResponseDto.builder()
                 .message(comment.getMessage())
                 .created_at(comment.getCreated_at())
@@ -112,7 +112,7 @@ public class Converter<R extends BaseEntity, P> {
                 .build();
     }
 
-    private static UserCommentResponseDto toUserCommentResponseDto(User user) {
+    public static UserCommentResponseDto toUserCommentResponseDto(User user) {
         return UserCommentResponseDto.builder()
                 .name(user.getName())
                 .imageUrl(user.getImageUrl())
@@ -164,4 +164,5 @@ public class Converter<R extends BaseEntity, P> {
                 .description(step.getDescription())
                 .build();
     }
+
 }

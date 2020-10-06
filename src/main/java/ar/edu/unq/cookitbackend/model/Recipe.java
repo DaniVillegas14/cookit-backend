@@ -34,4 +34,8 @@ public class Recipe extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
 }
