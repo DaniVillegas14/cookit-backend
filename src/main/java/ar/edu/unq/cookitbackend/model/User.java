@@ -20,7 +20,8 @@ public class User extends BaseEntity {
     @Column(name = "imageurl")
     private String imageUrl;
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @Builder.Default
+    private List<Comment> comments = new ArrayList<>();
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     @Builder.Default
     private List<Recipe> recipes = new ArrayList<>();

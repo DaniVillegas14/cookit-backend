@@ -1,9 +1,6 @@
 package ar.edu.unq.cookitbackend.service.initial;
 
-import ar.edu.unq.cookitbackend.model.Ingredient;
-import ar.edu.unq.cookitbackend.model.Recipe;
-import ar.edu.unq.cookitbackend.model.Step;
-import ar.edu.unq.cookitbackend.model.User;
+import ar.edu.unq.cookitbackend.model.*;
 import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,16 +21,22 @@ public class InitialRecipe {
     private InitialIngredient initialIngredient;
 
     @Autowired
+    private InitialComment initialComment;
+
+    @Autowired
     private InitialStep initialStep;
 
     public void createRecipes(User user) {
         this.generateRecipes().forEach(recipe -> {
             List<Ingredient> ingredients = initialIngredient.createIngredients();
             List<Step> steps = initialStep.createSteps();
+            List<Comment> comments = initialComment.createComments();
             recipe.setIngredients(ingredients);
             recipe.setSteps(steps);
+            recipe.setComments(comments);
             steps.forEach(step -> step.setRecipe(recipe));
             ingredients.forEach(ingredient -> ingredient.setRecipe(recipe));
+            comments.forEach(comment -> comment.setRecipe(recipe));
             user.addRecipe(recipe);
             recipe.setUser(user);
             recipeRepository.save(recipe);
