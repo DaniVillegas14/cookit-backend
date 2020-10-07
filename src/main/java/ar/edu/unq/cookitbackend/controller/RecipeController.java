@@ -41,7 +41,7 @@ public class RecipeController {
         return new ResponseEntity<>(recipe, HttpStatus.OK);
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/comments")
     public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto request) throws NotFoundException {
         CommentResponseDto response = recipeService.createComment(request);
         return new ResponseEntity<>(response, HttpStatus.OK);

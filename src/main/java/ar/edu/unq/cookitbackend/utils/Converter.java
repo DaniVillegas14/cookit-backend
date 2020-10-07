@@ -115,6 +115,7 @@ public class Converter<R extends BaseEntity, P> {
     public static UserCommentResponseDto toUserCommentResponseDto(User user) {
         return UserCommentResponseDto.builder()
                 .name(user.getName())
+                .lastname(user.getLastname())
                 .imageUrl(user.getImageUrl())
                 .build();
     }

@@ -7,5 +7,6 @@ import lombok.Setter;
 @Getter @Setter @Builder
 public class UserCommentResponseDto {
     private String name;
+    private String lastname;
     private String imageUrl;
 }
