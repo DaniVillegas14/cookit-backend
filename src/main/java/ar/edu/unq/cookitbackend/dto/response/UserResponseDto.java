@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 @Getter @Setter @Builder
 public class UserResponseDto {
     private Long id;
@@ -12,4 +14,6 @@ public class UserResponseDto {
     private String imageUrl;
     private String name;
     private String lastname;
+    private List<RecipeResponseDto> favorites;
+    private List<RecipeResponseDto> recipes;
 }

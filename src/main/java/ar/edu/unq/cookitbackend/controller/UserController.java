@@ -5,10 +5,7 @@ import ar.edu.unq.cookitbackend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -21,5 +18,19 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUserByToken(@RequestHeader ("Authorization") String token) {
         UserResponseDto response = userService.getUserByToken(token);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/{userId}/favorites/{recipeId}")
+    public ResponseEntity<String> addRecipeToFavorites(@PathVariable ("userId") Long userId,
+                                                     @PathVariable ("recipeId") Long recipeId) {
+        userService.addRecipeToFavorites(userId, recipeId);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{userId}/favorites/{favoriteId}")
+    public ResponseEntity<String> removeRecipeToFavorites(@PathVariable ("userId") Long userId,
+                                                          @PathVariable ("favoriteId") Long favoriteId) {
+        userService.removeRecipeToFavorites(userId, favoriteId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,7 +1,9 @@
 package ar.edu.unq.cookitbackend.service.impl;
 
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
+import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.model.User;
+import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
 import ar.edu.unq.cookitbackend.persistence.UserRepository;
 import ar.edu.unq.cookitbackend.service.IUserService;
 import ar.edu.unq.cookitbackend.utils.Converter;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @Transactional
@@ -17,6 +21,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RecipeRepository recipeRepository;
 
     @Override
     public UserResponseDto getUserByToken(String token) {
@@ -31,5 +38,27 @@ public class UserService implements IUserService {
         User user = userRepository.findByEmail(email);
 
         return Converter.toUserResponseDto(user);
+    }
+
+    @Override
+    public void addRecipeToFavorites(Long userId, Long favoriteRecipeId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()) {
+            throw new RuntimeException("No se encuentra el usuario id");
+        }
+        User user = optionalUser.get();
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(favoriteRecipeId);
+        if(!optionalRecipe.isPresent()) {
+            throw new RuntimeException("No se encuentra la receta");
+        }
+        Recipe recipe = optionalRecipe.get();
+        user.addFavoriteRecipes(recipe);
+        recipe.addFavoriteOf(user);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void removeRecipeToFavorites(Long userId, Long favoriteId) {
+
     }
 }

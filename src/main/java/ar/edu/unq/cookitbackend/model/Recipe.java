@@ -6,7 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
@@ -34,8 +36,14 @@ public class Recipe extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
+    @ManyToMany(mappedBy = "favorite_recipes")
+    private List<User> favoriteOf;
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
+    }
+
+    public void addFavoriteOf(User user) {
+        this.favoriteOf.add(user);
     }
 }

@@ -4,7 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
@@ -25,7 +27,15 @@ public class User extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     @Builder.Default
     private List<Recipe> recipes = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "rel_user_recipe",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "recipe_id") }
+    )
+    private List<Recipe> favorite_recipes;
 
+    public void addFavoriteRecipes(Recipe recipe) { this.favorite_recipes.add(recipe); }
     public void addRecipe(Recipe recipe) {
         this.recipes.add(recipe);
     }

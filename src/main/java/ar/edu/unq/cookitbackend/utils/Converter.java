@@ -136,6 +136,8 @@ public class Converter<R extends BaseEntity, P> {
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .imageUrl(user.getImageUrl())
+                .favorites(user.getFavorite_recipes().stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList()))
+                .recipes(user.getRecipes().stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList()))
                 .build();
     }
 
