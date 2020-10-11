@@ -27,16 +27,20 @@ public class User extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     @Builder.Default
     private List<Recipe> recipes = new ArrayList<>();
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "rel_user_recipe",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "recipe_id") }
     )
-    private List<Recipe> favorite_recipes;
+    private Set<Recipe> favorite_recipes;
 
     public void addFavoriteRecipes(Recipe recipe) { this.favorite_recipes.add(recipe); }
     public void addRecipe(Recipe recipe) {
         this.recipes.add(recipe);
+    }
+
+    public void removeRecipeToFavorite(Recipe recipe) {
+        this.favorite_recipes.removeIf(r -> r.getId().equals(recipe.getId()));
     }
 }

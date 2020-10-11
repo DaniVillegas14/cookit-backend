@@ -58,7 +58,20 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void removeRecipeToFavorites(Long userId, Long favoriteId) {
-
+    public void removeRecipeToFavorites(Long userId, Long favoriteRecipeId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()) {
+            throw new RuntimeException("No se encuentra el usuario id");
+        }
+        User user = optionalUser.get();
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(favoriteRecipeId);
+        if(!optionalRecipe.isPresent()) {
+            throw new RuntimeException("No se encuentra la receta");
+        }
+        Recipe recipe = optionalRecipe.get();
+        user.removeRecipeToFavorite(recipe);
+        recipe.removeFavoriteOf(user);
+        userRepository.save(user);
+        recipeRepository.save(recipe);
     }
 }
