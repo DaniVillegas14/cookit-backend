@@ -9,6 +9,7 @@ import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.Comment;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.model.User;
+import ar.edu.unq.cookitbackend.persistence.CommentRepository;
 import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
 import ar.edu.unq.cookitbackend.persistence.UserRepository;
 import ar.edu.unq.cookitbackend.service.IRecipes;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +32,9 @@ public class RecipeService implements IRecipes {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
 
     @Override
     public Page<PageableRecipeResponseDto> getAllRecipes(Optional<String> search,
@@ -55,7 +60,13 @@ public class RecipeService implements IRecipes {
         Recipe recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Receta no encontrada"));
 
-        return Converter.toRecipeResponseDto(recipe);
+        RecipeResponseDto response = Converter.toRecipeResponseDto(recipe);
+        if (!recipe.getComments().isEmpty()) {
+            Comment lastComment = commentRepository.findLastCommentByIdRecipe(id).get(0);
+            response.setLastComment(Converter.toCommentResponseDto(lastComment));
+        }
+
+        return response;
     }
 
     @Override

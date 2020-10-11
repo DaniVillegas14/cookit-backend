@@ -17,7 +17,8 @@ public class RecipeResponseDto {
     private int time;
     private String name;
     private String imageUrl;
-    private List<CommentResponseDto> comments;
+    private CommentResponseDto lastComment;
+    private Integer commentsSize;
     private List<IngredientResponseDto> ingredients;
     private List<StepResponseDto> steps;
     private LittleUserResponseDto user;
