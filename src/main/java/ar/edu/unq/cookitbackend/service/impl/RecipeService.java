@@ -3,6 +3,7 @@ package ar.edu.unq.cookitbackend.service.impl;
 import ar.edu.unq.cookitbackend.dto.request.CommentRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
+import ar.edu.unq.cookitbackend.dto.response.PageableCommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableRecipeResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
@@ -82,6 +83,16 @@ public class RecipeService implements IRecipes {
         recipeRepository.save(recipe);
 
         return Converter.toCommentResponseDto(comment);
+    }
+
+    @Override
+    public Page<CommentResponseDto> getCommentsByIdRecipe(Long id, Pageable pageable) throws NotFoundException {
+        Recipe recipe = recipeRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Receta no encontrada"));
+
+        Page<Comment> pageableComments = commentRepository.findAllBy(recipe.getId(), pageable);
+
+        return pageableComments.map(Converter::toCommentResponseDto);
     }
 
 }

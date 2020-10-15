@@ -7,8 +7,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Getter @Setter @Builder
-public class CommentResponseDto {
-    private Long id;
+public class PageableCommentResponseDto {
     private String message;
     private LocalDateTime created_at;
     private UserCommentResponseDto owner;

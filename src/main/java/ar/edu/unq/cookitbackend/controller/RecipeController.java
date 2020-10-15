@@ -3,6 +3,7 @@ package ar.edu.unq.cookitbackend.controller;
 import ar.edu.unq.cookitbackend.dto.request.CommentRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
+import ar.edu.unq.cookitbackend.dto.response.PageableCommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableRecipeResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
@@ -15,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -44,6 +47,13 @@ public class RecipeController {
     @PostMapping("/comments")
     public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto request) throws NotFoundException {
         CommentResponseDto response = recipeService.createComment(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<Page<CommentResponseDto>> getCommentsByIdRecipe(@PathVariable ("id") Long id,
+                                                                                  Pageable pageable) throws NotFoundException {
+        Page<CommentResponseDto> response = recipeService.getCommentsByIdRecipe(id, pageable);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
