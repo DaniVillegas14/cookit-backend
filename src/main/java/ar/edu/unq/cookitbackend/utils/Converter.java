@@ -106,6 +106,7 @@ public class Converter<R extends BaseEntity, P> {
 
     public static CommentResponseDto toCommentResponseDto(Comment comment) {
         return CommentResponseDto.builder()
+                .id(comment.getId())
                 .message(comment.getMessage())
                 .created_at(comment.getCreated_at())
                 .owner(toUserCommentResponseDto(comment.getOwner()))

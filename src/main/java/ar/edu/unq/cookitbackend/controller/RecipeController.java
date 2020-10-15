@@ -3,6 +3,7 @@ package ar.edu.unq.cookitbackend.controller;
 import ar.edu.unq.cookitbackend.dto.request.CommentRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
+import ar.edu.unq.cookitbackend.dto.response.PageableCommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableRecipeResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
@@ -50,8 +51,9 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}/comments")
-    public ResponseEntity<List<CommentResponseDto>> getCommentsByIdRecipe(@PathVariable ("id") Long id) throws NotFoundException {
-        List<CommentResponseDto> response = recipeService.getCommentsByIdRecipe(id);
+    public ResponseEntity<Page<CommentResponseDto>> getCommentsByIdRecipe(@PathVariable ("id") Long id,
+                                                                                  Pageable pageable) throws NotFoundException {
+        Page<CommentResponseDto> response = recipeService.getCommentsByIdRecipe(id, pageable);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
