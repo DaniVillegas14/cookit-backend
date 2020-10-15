@@ -10,6 +10,7 @@ import ar.edu.unq.cookitbackend.model.Recipe;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IRecipes {
@@ -17,4 +18,5 @@ public interface IRecipes {
     Recipe createRecipe(RecipeDto recipeDto);
     RecipeResponseDto getRecipe(Long id) throws NotFoundException;
     CommentResponseDto createComment(CommentRequestDto request) throws NotFoundException;
+    List<CommentResponseDto> getCommentsByIdRecipe(Long id) throws NotFoundException;
 }

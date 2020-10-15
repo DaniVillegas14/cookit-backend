@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -44,6 +46,12 @@ public class RecipeController {
     @PostMapping("/comments")
     public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto request) throws NotFoundException {
         CommentResponseDto response = recipeService.createComment(request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<CommentResponseDto>> getCommentsByIdRecipe(@PathVariable ("id") Long id) throws NotFoundException {
+        List<CommentResponseDto> response = recipeService.getCommentsByIdRecipe(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

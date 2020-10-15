@@ -84,4 +84,14 @@ public class RecipeService implements IRecipes {
         return Converter.toCommentResponseDto(comment);
     }
 
+    @Override
+    public List<CommentResponseDto> getCommentsByIdRecipe(Long id) throws NotFoundException {
+        Recipe recipe = recipeRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Receta no encontrada"));
+
+        List<Comment> comments = commentRepository.findCommentsByIdRecipe(id);
+
+        return Converter.toCommentsResponseDto(comments);
+    }
+
 }

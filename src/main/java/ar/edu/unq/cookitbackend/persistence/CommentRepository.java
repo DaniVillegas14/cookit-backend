@@ -17,4 +17,11 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
                     "ORDER BY c.created_at DESC"
     )
     List<Comment> findLastCommentByIdRecipe(Long id);
+
+    @Query(
+            "SELECT c " +
+                    "FROM Comment c " +
+                    "WHERE c.recipe.id = :id"
+    )
+    List<Comment> findCommentsByIdRecipe(Long id);
 }
