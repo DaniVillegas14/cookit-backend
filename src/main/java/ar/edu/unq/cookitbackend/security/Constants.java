@@ -4,6 +4,7 @@ public class Constants {
 
     public static final String[] AUTH_WHITELIST = {
             "/auth/login/social",
+            "/auth/register",
             "/test",
             "/v2/api-docs",
             "/swagger-resources",
