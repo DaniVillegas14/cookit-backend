@@ -36,7 +36,7 @@ public class AuthService implements IAuthService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public void register(UserRequestDto request) {
+    public void register(UserRequestDto request) throws EmailExistException {
         User user = userRepository.findByEmail(request.getEmail());
 
         if(user != null) {

@@ -12,7 +12,7 @@ import org.springframework.web.util.WebUtils;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({ Exception.class })
+    @ExceptionHandler({Exception.class})
     @Nullable
     public final ResponseEntity<ApiError> handleException(Exception ex, WebRequest request) {
         HttpHeaders headers = new HttpHeaders();
@@ -22,6 +22,11 @@ public class GlobalExceptionHandler {
             NotFoundException notFoundException = (NotFoundException) ex;
 
             return handleException(notFoundException, headers, status, request);
+        } else if (ex instanceof EmailExistException) {
+            HttpStatus status = HttpStatus.CONFLICT;
+            EmailExistException emailExistException = (EmailExistException) ex;
+
+            return handleException(emailExistException, headers, status, request);
         } else {
             HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
             return handleExceptionInternal(ex, null, headers, status, request);

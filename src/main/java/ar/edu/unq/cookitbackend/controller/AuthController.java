@@ -3,6 +3,7 @@ package ar.edu.unq.cookitbackend.controller;
 import ar.edu.unq.cookitbackend.dto.request.LoginRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.JwtResponse;
+import ar.edu.unq.cookitbackend.exception.EmailExistException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.service.IAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AuthController {
     private IAuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRequestDto request) throws NotFoundException {
+    public ResponseEntity<String> register(@RequestBody UserRequestDto request) throws NotFoundException, EmailExistException {
         authService.register(request);
         return new ResponseEntity<>(null, HttpStatus.CREATED);
     }
