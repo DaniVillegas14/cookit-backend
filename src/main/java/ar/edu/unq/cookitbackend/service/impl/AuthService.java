@@ -35,7 +35,7 @@ public class AuthService implements IAuthService {
         User user = userRepository.findByEmail(request.getEmail());
 
         if(user != null) {
-            throw new NotFoundException("Usuario no encontrado");
+            throw new NotFoundException("Ya existe el usuario con el email ingresado");
         }
 
         userRepository.save(Converter.toUser(request));
