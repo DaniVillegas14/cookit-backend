@@ -10,4 +10,5 @@ public class UserRequestDto {
     private String name;
     private String lastname;
     private String imageUrl;
+    private String password;
 }

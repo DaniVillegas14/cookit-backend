@@ -3,6 +3,7 @@ package ar.edu.unq.cookitbackend.service.impl;
 import ar.edu.unq.cookitbackend.dto.request.LoginRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.JwtResponse;
+import ar.edu.unq.cookitbackend.exception.EmailExistException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.User;
 import ar.edu.unq.cookitbackend.persistence.UserRepository;
@@ -12,6 +13,7 @@ import ar.edu.unq.cookitbackend.service.IAuthService;
 import ar.edu.unq.cookitbackend.utils.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,15 +32,20 @@ public class AuthService implements IAuthService {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
-    public void register(UserRequestDto request) throws NotFoundException {
+    public void register(UserRequestDto request) {
         User user = userRepository.findByEmail(request.getEmail());
 
         if(user != null) {
-            throw new NotFoundException("Ya existe el usuario con el email ingresado");
+            throw new EmailExistException();
         }
 
-        userRepository.save(Converter.toUser(request));
+        User newUser = Converter.toUser(request);
+        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        userRepository.save(newUser);
     }
 
     @Override
