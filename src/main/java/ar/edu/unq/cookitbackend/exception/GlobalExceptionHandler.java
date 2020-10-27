@@ -27,6 +27,11 @@ public class GlobalExceptionHandler {
             EmailExistException emailExistException = (EmailExistException) ex;
 
             return handleException(emailExistException, headers, status, request);
+        }  else if (ex instanceof LoginException) {
+            HttpStatus status = HttpStatus.CONFLICT;
+            LoginException loginException = (LoginException) ex;
+
+            return handleException(loginException, headers, status, request);
         } else {
             HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
             return handleExceptionInternal(ex, null, headers, status, request);

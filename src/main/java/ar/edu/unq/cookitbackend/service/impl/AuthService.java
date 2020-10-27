@@ -1,9 +1,11 @@
 package ar.edu.unq.cookitbackend.service.impl;
 
+import ar.edu.unq.cookitbackend.dto.request.LoginGoogleRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.LoginRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.JwtResponse;
 import ar.edu.unq.cookitbackend.exception.EmailExistException;
+import ar.edu.unq.cookitbackend.exception.LoginException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.User;
 import ar.edu.unq.cookitbackend.persistence.UserRepository;
@@ -16,8 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -49,7 +49,7 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public JwtResponse loginSocial(LoginRequestDto request) {
+    public JwtResponse loginSocial(LoginGoogleRequestDto request) {
         User user = userRepository.findByEmail(request.getEmail());
 
         if (user == null) {
@@ -66,6 +66,25 @@ public class AuthService implements IAuthService {
         }
 
         return generateToken(user);
+    }
+
+    @Override
+    public JwtResponse login(LoginRequestDto request) throws LoginException, NotFoundException {
+        User user = userRepository.findByEmail(request.getEmail());
+
+        if (user == null) {
+            throw new NotFoundException("Usuario no encontrado");
+        }
+
+        if (this.isPasswordCorrect(request.getPassword(), user.getPassword())) {
+            return generateToken(user);
+        }
+
+        throw new LoginException();
+    }
+
+    private Boolean isPasswordCorrect(String passwordToVerify, String passwordCorrectly){
+        return passwordEncoder.matches(passwordToVerify, passwordCorrectly);
     }
 
     private JwtResponse generateToken(User user) {
