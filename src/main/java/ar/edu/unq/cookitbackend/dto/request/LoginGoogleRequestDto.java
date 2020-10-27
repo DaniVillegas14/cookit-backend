@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter @Builder
-public class LoginRequestDto {
+public class LoginGoogleRequestDto {
     private String email;
-    private String password;
+    private String name;
+    private String lastname;
+    private String imageUrl;
 }
