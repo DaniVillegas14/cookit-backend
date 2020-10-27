@@ -16,4 +16,6 @@ public class UserResponseDto {
     private String lastname;
     private List<RecipeResponseDto> favorites;
     private List<RecipeResponseDto> recipes;
+    private List<LittleUserResponseDto> followeds;
+    private List<LittleUserResponseDto> followers;
 }

@@ -36,12 +36,28 @@ public class User extends BaseEntity {
             inverseJoinColumns = { @JoinColumn(name = "recipe_id") }
     )
     private Set<Recipe> favorite_recipes;
+    @ManyToMany
+    @JoinTable(
+            name = "rel_user_follow",
+            joinColumns = { @JoinColumn(name = "user_follow_id")},
+            inverseJoinColumns = { @JoinColumn(name = "user_follower_id")}
+    )
+    private Set<User> follows;
 
+    @ManyToMany(mappedBy = "follows")
+    private Set<User> followers;
+
+    public void addFollow(User user) {
+        this.follows.add(user);
+    }
     public void addFavoriteRecipes(Recipe recipe) { this.favorite_recipes.add(recipe); }
     public void addRecipe(Recipe recipe) {
         this.recipes.add(recipe);
     }
 
+    public void removeFollow(User user) {
+        this.follows.removeIf(u -> u.getId().equals(user.getId()));
+    }
     public void removeRecipeToFavorite(Recipe recipe) {
         this.favorite_recipes.removeIf(r -> r.getId().equals(recipe.getId()));
     }

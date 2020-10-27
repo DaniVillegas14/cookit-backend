@@ -1,6 +1,7 @@
 package ar.edu.unq.cookitbackend.service.impl;
 
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
+import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.model.User;
 import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
@@ -72,6 +73,37 @@ public class UserService implements IUserService {
         user.removeRecipeToFavorite(recipe);
         recipe.removeFavoriteOf(user);
         userRepository.save(user);
-        recipeRepository.save(recipe);
+    }
+
+    @Override
+    public void followUser(Long userId, Long userFollowId) throws NotFoundException {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()) {
+            throw new NotFoundException("No se encuentra el usuario id");
+        }
+        User user = optionalUser.get();
+        Optional<User> optionalFollowerUser = userRepository.findById(userFollowId);
+        if(!optionalFollowerUser.isPresent()) {
+            throw new NotFoundException("No se encuentra el usuario id");
+        }
+        User followerUser = optionalFollowerUser.get();
+        user.addFollow(followerUser);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void unfollowUser(Long userId, Long userFollowId) throws NotFoundException {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()) {
+            throw new NotFoundException("No se encuentra el usuario id");
+        }
+        User user = optionalUser.get();
+        Optional<User> optionalFollowerUser = userRepository.findById(userFollowId);
+        if(!optionalFollowerUser.isPresent()) {
+            throw new NotFoundException("No se encuentra el usuario id");
+        }
+        User followerUser = optionalFollowerUser.get();
+        user.removeFollow(followerUser);
+        userRepository.save(user);
     }
 }
