@@ -56,4 +56,10 @@ public class RecipeController {
         Page<CommentResponseDto> response = recipeService.getCommentsByIdRecipe(id, pageable);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteRecipeById(@PathVariable ("id") Long id) throws NotFoundException {
+        recipeService.deleteRecipeById(id);
+        return new ResponseEntity<>(null, HttpStatus.OK);
+    }
 }
