@@ -1,15 +1,11 @@
 package ar.edu.unq.cookitbackend.controller;
 import ar.edu.unq.cookitbackend.dto.request.LoginGoogleRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.LoginRequestDto;
-import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.JwtResponse;
-import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
-import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.security.JwtAuthenticationEntryPoint;
 import ar.edu.unq.cookitbackend.security.JwtRequestFilter;
 import ar.edu.unq.cookitbackend.service.IAuthService;
-import ar.edu.unq.cookitbackend.service.IRecipes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.Before;

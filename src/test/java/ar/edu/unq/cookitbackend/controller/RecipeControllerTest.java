@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -98,6 +100,16 @@ public class RecipeControllerTest {
                 .andExpect(jsonPath("$.name", is(recipe.getName())))
                 .andExpect(jsonPath("$.description", is(recipe.getDescription())))
                 .andExpect(jsonPath("$.imageUrl", is(recipe.getImageUrl())));
+    }
+
+    @Test
+    public void testShouldDeleteRecipeById() throws Exception {
+
+        Long recipeId = 1L;
+
+        mockMvc.perform(delete("/api/recipes/{id}", recipeId).servletPath("/api"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
 }
