@@ -1,10 +1,11 @@
 package ar.edu.unq.cookitbackend.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter @Getter @AllArgsConstructor
+@Setter @Getter @AllArgsConstructor @Builder
 public class JwtResponse {
 
     private long id;
