@@ -95,4 +95,12 @@ public class RecipeService implements IRecipes {
         return pageableComments.map(Converter::toCommentResponseDto);
     }
 
+    @Override
+    public void deleteRecipeById(Long id) throws NotFoundException {
+        Recipe recipe = recipeRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Receta no encontrada"));
+
+        recipeRepository.delete(recipe);
+    }
+
 }
