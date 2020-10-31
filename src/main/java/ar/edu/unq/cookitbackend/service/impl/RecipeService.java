@@ -45,6 +45,16 @@ public class RecipeService implements IRecipes {
     }
 
     @Override
+    public Page<PageableRecipeResponseDto> findFollowersRecipes(Long userId, Pageable pageable) throws NotFoundException {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (!optionalUser.isPresent()) {
+            throw new NotFoundException("No se encontro al usuario");
+        }
+        Page<Recipe> pageableRecipes = recipeRepository.findFollowersRecipes(userId, pageable);
+        return pageableRecipes.map(Converter::toPageableRecipeDto);
+    }
+
+    @Override
     public Recipe createRecipe(RecipeDto recipeDto) {
         Optional<User> user = userRepository.findById(recipeDto.getUserId());
         if (!user.isPresent()) {

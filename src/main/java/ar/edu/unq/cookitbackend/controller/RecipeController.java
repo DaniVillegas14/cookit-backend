@@ -62,4 +62,9 @@ public class RecipeController {
         recipeService.deleteRecipeById(id);
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
+
+    @GetMapping("/followers/{userId}")
+    public ResponseEntity<?> findFollowersRecipes(@PathVariable ("userId") Long userId, Pageable pageable) throws  NotFoundException {
+        return new ResponseEntity<>(recipeService.findFollowersRecipes(userId, pageable), HttpStatus.OK);
+    }
 }
