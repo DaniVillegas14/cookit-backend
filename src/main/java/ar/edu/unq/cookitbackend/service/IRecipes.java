@@ -21,4 +21,5 @@ public interface IRecipes {
     CommentResponseDto createComment(CommentRequestDto request) throws NotFoundException;
     Page<CommentResponseDto> getCommentsByIdRecipe(Long id, Pageable pageable) throws NotFoundException;
     void deleteRecipeById(Long id) throws NotFoundException;
+    Page<PageableRecipeResponseDto> findFollowersRecipes(Long userId, Pageable pageable) throws NotFoundException;
 }
