@@ -2,12 +2,14 @@ package ar.edu.unq.cookitbackend.controller;
 
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
+import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.security.JwtAuthenticationEntryPoint;
 import ar.edu.unq.cookitbackend.security.JwtRequestFilter;
 import ar.edu.unq.cookitbackend.service.IRecipes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jdk.nashorn.internal.ir.Optimistic;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -103,13 +106,15 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testShouldDeleteRecipeById() throws Exception {
+    public void testShouldRecipeNotFoundWithStatus404() throws Exception {
 
-        Long recipeId = 1L;
+        Long recipeId = 22L;
 
-        mockMvc.perform(delete("/api/recipes/{id}", recipeId).servletPath("/api"))
+        given(recipeService.getRecipe(recipeId)).willThrow(new NotFoundException("No se encontro la receta"));
+
+        mockMvc.perform(get("/api/recipes/{id}", recipeId).servletPath("/api"))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
     }
 
 }
