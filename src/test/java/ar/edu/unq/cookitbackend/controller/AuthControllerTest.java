@@ -3,6 +3,9 @@ import ar.edu.unq.cookitbackend.dto.request.LoginGoogleRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.LoginRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.JwtResponse;
+import ar.edu.unq.cookitbackend.exception.EmailExistException;
+import ar.edu.unq.cookitbackend.exception.LoginException;
+import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.security.JwtAuthenticationEntryPoint;
 import ar.edu.unq.cookitbackend.security.JwtRequestFilter;
 import ar.edu.unq.cookitbackend.service.IAuthService;
@@ -111,6 +114,31 @@ public class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email", is(response.getEmail())))
                 .andExpect(jsonPath("$.token", is(response.getToken())));
+    }
+
+    @Test
+    public void testShouldLoginWithWrongEmailAndReturnExceptionWithStatus404() throws Exception {
+        UserRequestDto user = UserRequestDto.builder()
+                .email("dani.villegas@gmail.com")
+                .name("dani")
+                .lastname("villegas")
+                .password("test")
+                .build();
+
+        LoginRequestDto user2 = LoginRequestDto.builder()
+                .email("dani.villegas123@gmail.com")
+                .password("test")
+                .build();
+
+        authService.register(user);
+
+        given(authService.login(user2)).willThrow(new NotFoundException("El email es incorrecto"));
+
+        mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user2)))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
 }
