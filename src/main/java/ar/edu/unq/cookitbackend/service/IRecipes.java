@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public interface IRecipes {
     Page<PageableRecipeResponseDto> getAllRecipes(Optional<String> search, Pageable pageable);
-    Recipe createRecipe(RecipeDto recipeDto);
+    RecipeDto createRecipe(RecipeDto recipeDto);
     RecipeResponseDto getRecipe(Long id) throws NotFoundException;
     CommentResponseDto createComment(CommentRequestDto request) throws NotFoundException;
     Page<CommentResponseDto> getCommentsByIdRecipe(Long id, Pageable pageable) throws NotFoundException;
