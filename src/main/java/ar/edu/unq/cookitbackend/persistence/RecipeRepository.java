@@ -45,9 +45,10 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findRecipesByIdUser(@Param("userId") Long userId);
 
     @Query(
-            "SELECT r " +
-                    "FROM Recipe r JOIN User u ON r.user.id = u.id AND r.available = true " +
-                    "INNER JOIN u.favorite_recipes f ON f.user.id = :userId"
+            "SELECT fav " +
+                    "FROM User u " +
+                    "JOIN u.favorite_recipes fav " +
+                    "WHERE fav.available = true AND u.id = :userId"
     )
     List<Recipe> findRecipesFavoritesByIdUser(@Param("userId") Long userId);
 }
