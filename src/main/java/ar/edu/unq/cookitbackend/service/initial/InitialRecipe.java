@@ -32,6 +32,7 @@ public class InitialRecipe {
             List<Step> steps = initialStep.createSteps();
             List<Comment> comments = initialComment.createComments();
             recipe.setIngredients(ingredients);
+            recipe.setAvailable(true);
             recipe.setSteps(steps);
             recipe.setComments(comments);
             steps.forEach(step -> step.setRecipe(recipe));

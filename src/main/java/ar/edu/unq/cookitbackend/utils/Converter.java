@@ -131,7 +131,7 @@ public class Converter<R extends BaseEntity, P> {
                 .build();
     }
 
-    public static UserResponseDto toUserResponseDto(User user) {
+    public static UserResponseDto toUserResponseDto(User user, List<Recipe> recipes) {
         return UserResponseDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -139,7 +139,7 @@ public class Converter<R extends BaseEntity, P> {
                 .lastname(user.getLastname())
                 .imageUrl(user.getImageUrl())
                 .favorites(user.getFavorite_recipes().stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList()))
-                .recipes(user.getRecipes().stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList()))
+                .recipes(recipes.stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList()))
                 .followeds(user.getFollows().stream().map(Converter::convertUserToLittleUserDto).collect(Collectors.toList()))
                 .followers(user.getFollowers().stream().map(Converter::convertUserToLittleUserDto).collect(Collectors.toList()))
                 .build();
@@ -172,4 +172,7 @@ public class Converter<R extends BaseEntity, P> {
                 .build();
     }
 
+    public static List<RecipeResponseDto> toRecipesResponseDto(List<Recipe> recipes) {
+        return recipes.stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList());
+    }
 }

@@ -1,12 +1,10 @@
 package ar.edu.unq.cookitbackend.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
-@Getter @Setter @Builder
+@Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
 public class RecipeDto {
     private int comensales;
     private String description;

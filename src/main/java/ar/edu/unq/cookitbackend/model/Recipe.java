@@ -23,6 +23,8 @@ public class Recipe extends BaseEntity {
     private String imageUrl;
     @Column(name = "comensales", nullable = false)
     private int comensales;
+    @Column(name = "available", nullable = false)
+    private Boolean available;
     @Column(name = "time", nullable = false)
     private int time;
     @CreationTimestamp

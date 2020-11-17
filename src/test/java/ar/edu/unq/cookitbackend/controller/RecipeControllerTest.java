@@ -87,11 +87,10 @@ public class RecipeControllerTest {
     @Test
     public void testShouldCreateNewRecipe() throws Exception {
 
-        Recipe recipe = new Recipe();
-        recipe.setId(1L);
+        RecipeDto recipe = new RecipeDto();
         recipe.setName("Tarta de frutillas");
         recipe.setDescription("Para aprovechar las frutillas de estacion. En este caso la hice doble porque somos muchos, pero se puede hacer la mitad y sale una tarta redonda convencional.");
-        recipe.setImageUrl("https://img-global.cpcdn.com/recipes/424565f2d5a5103c/751x532cq70/tarta-de-frutillas-foto-principal.jpg");
+        recipe.setImage_url("https://img-global.cpcdn.com/recipes/424565f2d5a5103c/751x532cq70/tarta-de-frutillas-foto-principal.jpg");
 
         given(recipeService.createRecipe(any(RecipeDto.class))).willReturn(recipe);
 
@@ -102,7 +101,7 @@ public class RecipeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is(recipe.getName())))
                 .andExpect(jsonPath("$.description", is(recipe.getDescription())))
-                .andExpect(jsonPath("$.imageUrl", is(recipe.getImageUrl())));
+                .andExpect(jsonPath("$.image_url", is(recipe.getImage_url())));
     }
 
     @Test

@@ -55,20 +55,22 @@ public class RecipeService implements IRecipes {
     }
 
     @Override
-    public Recipe createRecipe(RecipeDto recipeDto) {
+    public RecipeDto createRecipe(RecipeDto recipeDto) {
         Optional<User> user = userRepository.findById(recipeDto.getUserId());
         if (!user.isPresent()) {
             throw new RuntimeException("No se encuentra un usuario con ese id");
         }
         Recipe newRecipe = Converter.toRecipe(recipeDto);
         newRecipe.setUser(user.get());
+        newRecipe.setAvailable(true);
         user.get().addRecipe(newRecipe);
-        return recipeRepository.save(newRecipe);
+        recipeRepository.save(newRecipe);
+        return recipeDto;
     }
 
     @Override
     public RecipeResponseDto getRecipe(Long id) throws NotFoundException {
-        Recipe recipe = recipeRepository.findById(id)
+        Recipe recipe = recipeRepository.findByIdRecipe(id)
                 .orElseThrow(() -> new NotFoundException("Receta no encontrada"));
 
         RecipeResponseDto response = Converter.toRecipeResponseDto(recipe);
@@ -107,10 +109,11 @@ public class RecipeService implements IRecipes {
 
     @Override
     public void deleteRecipeById(Long id) throws NotFoundException {
-        Recipe recipe = recipeRepository.findById(id)
+        Recipe recipe = recipeRepository.findByIdRecipe(id)
                 .orElseThrow(() -> new NotFoundException("Receta no encontrada"));
 
-        recipeRepository.delete(recipe);
+        recipe.setAvailable(false);
+        recipeRepository.save(recipe);
     }
 
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -38,7 +39,15 @@ public class UserService implements IUserService {
 
         User user = userRepository.findByEmail(email);
 
-        return Converter.toUserResponseDto(user);
+        List<Recipe> availableRecipes = recipeRepository.findRecipesByIdUser(user.getId());
+
+        UserResponseDto userResponseDto = Converter.toUserResponseDto(user, availableRecipes);
+
+        List<Recipe> availableFavorites = recipeRepository.findRecipesFavoritesByIdUser(user.getId());
+
+        userResponseDto.setFavorites(Converter.toRecipesResponseDto(availableFavorites));
+
+        return userResponseDto;
     }
 
     @Override

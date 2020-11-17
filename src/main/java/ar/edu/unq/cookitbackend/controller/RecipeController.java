@@ -39,9 +39,9 @@ public class RecipeController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Recipe> addNewRecipe(@RequestBody RecipeDto recipeDto) {
-        Recipe recipe = recipeService.createRecipe(recipeDto);
-        return new ResponseEntity<>(recipe, HttpStatus.OK);
+    public ResponseEntity<RecipeDto> addNewRecipe(@RequestBody RecipeDto recipeDto) {
+        RecipeDto response = recipeService.createRecipe(recipeDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/comments")
