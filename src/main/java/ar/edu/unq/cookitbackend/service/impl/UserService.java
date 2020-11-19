@@ -1,5 +1,6 @@
 package ar.edu.unq.cookitbackend.service.impl;
 
+import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.Recipe;
@@ -113,6 +114,22 @@ public class UserService implements IUserService {
         }
         User followerUser = optionalFollowerUser.get();
         user.removeFollow(followerUser);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void editUser(UserRequestDto request) throws NotFoundException {
+        User user = userRepository.findByEmail(request.getEmail());
+
+        if(user == null) {
+            throw new NotFoundException("No se encontro el usuario con dicho email");
+        }
+
+        user.setName(request.getName());
+        user.setLastname(request.getLastname());
+        user.setImageUrl(request.getImageUrl());
+        user.setPassword(request.getPassword());
+
         userRepository.save(user);
     }
 }

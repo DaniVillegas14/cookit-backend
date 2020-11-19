@@ -1,5 +1,6 @@
 package ar.edu.unq.cookitbackend.service;
 
+import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 
@@ -13,4 +14,6 @@ public interface IUserService {
     void followUser(Long userId, Long userFollowId) throws NotFoundException;
 
     void unfollowUser(Long userId, Long userFollowId) throws NotFoundException;
+
+    void editUser(UserRequestDto request) throws NotFoundException;
 }
