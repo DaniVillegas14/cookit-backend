@@ -14,6 +14,7 @@ public class UserResponseDto {
     private String imageUrl;
     private String name;
     private String lastname;
+    private Boolean isGoogleAccount;
     private List<RecipeResponseDto> favorites;
     private List<RecipeResponseDto> recipes;
     private List<LittleUserResponseDto> followeds;

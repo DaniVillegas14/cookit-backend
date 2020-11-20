@@ -25,6 +25,7 @@ public class InitialComment {
                 .name("Dani")
                 .lastname("Villegas")
                 .imageUrl("https://lh3.googleusercontent.com/-OauyH4e031Y/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclJRoo7o5Jv9Ty-1cOA_iIkp6nxgw/s96-c/photo.jpg")
+                .isGoogleAccount(false)
                 .build();
 
         userRepository.save(owner);

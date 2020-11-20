@@ -1,18 +1,25 @@
 package ar.edu.unq.cookitbackend.service.impl;
 
+import ar.edu.unq.cookitbackend.dto.request.EditUserRequestDto;
+import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
+import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
+import ar.edu.unq.cookitbackend.exception.PasswordIncorrectException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.model.User;
 import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
 import ar.edu.unq.cookitbackend.persistence.UserRepository;
+import ar.edu.unq.cookitbackend.service.IDocumentationService;
 import ar.edu.unq.cookitbackend.service.IUserService;
 import ar.edu.unq.cookitbackend.utils.Converter;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +33,12 @@ public class UserService implements IUserService {
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IDocumentationService documentationService;
 
     @Override
     public UserResponseDto getUserByToken(String token) {
@@ -114,5 +127,51 @@ public class UserService implements IUserService {
         User followerUser = optionalFollowerUser.get();
         user.removeFollow(followerUser);
         userRepository.save(user);
+    }
+
+    @Override
+    public void editUser(EditUserRequestDto request) throws NotFoundException, PasswordIncorrectException, IOException, CreateDocumentationException {
+        User user = userRepository.findByEmail(request.getEmail());
+
+        if(user == null) {
+            throw new NotFoundException("No se encontro el usuario con dicho email");
+        }
+
+        if (user.getIsGoogleAccount()) {
+            user.setName(request.getName());
+            user.setLastname(request.getLastname());
+            setImageFromUser(user, request.getImageUrl());
+            userRepository.save(user);
+        } else {
+            setUserData(user, request);
+        }
+    }
+
+    private void setImageFromUser(User user, String imageUrl) throws IOException, CreateDocumentationException {
+        if (imageUrl != null) {
+            user.setImageUrl(documentationService.createImageDocumentation(imageUrl));
+        }
+    }
+
+    private void setUserData(User user, EditUserRequestDto request) throws PasswordIncorrectException, IOException, CreateDocumentationException {
+        if (isPasswordCorrect(request.getCurrentPassword(), user.getPassword())) {
+            user.setName(request.getName());
+            user.setLastname(request.getLastname());
+            setImageFromUser(user, request.getImageUrl());
+            setNewPassword(user, request.getNewPassword());
+            userRepository.save(user);
+        } else {
+            throw new PasswordIncorrectException();
+        }
+    }
+
+    private void setNewPassword(User user, String newPassword) {
+        if (newPassword != null) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+    }
+
+    private Boolean isPasswordCorrect(String passwordToVerify, String passwordCorrectly){
+        return passwordEncoder.matches(passwordToVerify, passwordCorrectly);
     }
 }

@@ -1,7 +1,13 @@
 package ar.edu.unq.cookitbackend.service;
 
+import ar.edu.unq.cookitbackend.dto.request.EditUserRequestDto;
+import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
+import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
+import ar.edu.unq.cookitbackend.exception.PasswordIncorrectException;
+
+import java.io.IOException;
 
 public interface IUserService {
     UserResponseDto getUserByToken(String token);
@@ -13,4 +19,6 @@ public interface IUserService {
     void followUser(Long userId, Long userFollowId) throws NotFoundException;
 
     void unfollowUser(Long userId, Long userFollowId) throws NotFoundException;
+
+    void editUser(EditUserRequestDto request) throws NotFoundException, PasswordIncorrectException, IOException, CreateDocumentationException;
 }

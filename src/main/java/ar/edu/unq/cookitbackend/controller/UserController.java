@@ -1,13 +1,18 @@
 package ar.edu.unq.cookitbackend.controller;
 
+import ar.edu.unq.cookitbackend.dto.request.EditUserRequestDto;
+import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
+import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
+import ar.edu.unq.cookitbackend.exception.PasswordIncorrectException;
 import ar.edu.unq.cookitbackend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 @RestController
@@ -21,6 +26,12 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUserByToken(@RequestHeader("Authorization") String token) {
         UserResponseDto response = userService.getUserByToken(token);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<String> editUser(@RequestBody EditUserRequestDto request) throws NotFoundException, PasswordIncorrectException, IOException, CreateDocumentationException {
+        userService.editUser(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/follow")
