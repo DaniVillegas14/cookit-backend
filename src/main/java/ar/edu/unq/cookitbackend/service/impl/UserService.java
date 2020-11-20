@@ -3,12 +3,14 @@ package ar.edu.unq.cookitbackend.service.impl;
 import ar.edu.unq.cookitbackend.dto.request.EditUserRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
+import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.exception.PasswordIncorrectException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.model.User;
 import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
 import ar.edu.unq.cookitbackend.persistence.UserRepository;
+import ar.edu.unq.cookitbackend.service.IDocumentationService;
 import ar.edu.unq.cookitbackend.service.IUserService;
 import ar.edu.unq.cookitbackend.utils.Converter;
 import org.apache.commons.codec.binary.Base64;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +36,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IDocumentationService documentationService;
 
     @Override
     public UserResponseDto getUserByToken(String token) {
@@ -124,7 +130,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void editUser(EditUserRequestDto request) throws NotFoundException, PasswordIncorrectException {
+    public void editUser(EditUserRequestDto request) throws NotFoundException, PasswordIncorrectException, IOException, CreateDocumentationException {
         User user = userRepository.findByEmail(request.getEmail());
 
         if(user == null) {
@@ -134,18 +140,18 @@ public class UserService implements IUserService {
         if (user.getIsGoogleAccount()) {
             user.setName(request.getName());
             user.setLastname(request.getLastname());
-            user.setImageUrl(request.getImageUrl());
+            user.setImageUrl(documentationService.createImageDocumentation(request.getImageUrl()));
             userRepository.save(user);
         } else {
             setUserData(user, request);
         }
     }
 
-    private void setUserData(User user, EditUserRequestDto request) throws PasswordIncorrectException {
+    private void setUserData(User user, EditUserRequestDto request) throws PasswordIncorrectException, IOException, CreateDocumentationException {
         if (isPasswordCorrect(request.getCurrentPassword(), user.getPassword())) {
             user.setName(request.getName());
             user.setLastname(request.getLastname());
-            user.setImageUrl(request.getImageUrl());
+            user.setImageUrl(documentationService.createImageDocumentation(request.getImageUrl()));
             setNewPassword(user, request.getNewPassword());
             userRepository.save(user);
         } else {

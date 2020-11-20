@@ -37,6 +37,11 @@ public class GlobalExceptionHandler {
             PasswordIncorrectException passwordIncorrectException = (PasswordIncorrectException) ex;
 
             return handleException(passwordIncorrectException, headers, status, request);
+        } if (ex instanceof CreateDocumentationException) {
+            HttpStatus status = HttpStatus.CONFLICT;
+            CreateDocumentationException createDocumentationException = (CreateDocumentationException) ex;
+
+            return handleException(createDocumentationException, headers, status, request);
         } else {
             HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
             return handleExceptionInternal(ex, null, headers, status, request);

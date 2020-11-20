@@ -11,6 +11,7 @@ public class Constants {
             "/configuration/ui",
             "/configuration/security",
             "/swagger-ui.html",
-            "/webjars/**"
+            "/webjars/**",
+            "/resources/**"
     };
 }

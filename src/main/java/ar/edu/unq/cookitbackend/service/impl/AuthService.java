@@ -4,6 +4,7 @@ import ar.edu.unq.cookitbackend.dto.request.LoginGoogleRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.LoginRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.JwtResponse;
+import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.EmailExistException;
 import ar.edu.unq.cookitbackend.exception.LoginException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
@@ -12,12 +13,15 @@ import ar.edu.unq.cookitbackend.persistence.UserRepository;
 import ar.edu.unq.cookitbackend.security.JwtTokenUtil;
 import ar.edu.unq.cookitbackend.security.JwtUserDetailsService;
 import ar.edu.unq.cookitbackend.service.IAuthService;
+import ar.edu.unq.cookitbackend.service.IDocumentationService;
 import ar.edu.unq.cookitbackend.utils.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
 
 @Service
 @Transactional
@@ -36,7 +40,7 @@ public class AuthService implements IAuthService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public void register(UserRequestDto request) throws EmailExistException {
+    public void register(UserRequestDto request) throws EmailExistException, IOException {
         User user = userRepository.findByEmail(request.getEmail());
 
         if(user != null) {
