@@ -140,10 +140,16 @@ public class UserService implements IUserService {
         if (user.getIsGoogleAccount()) {
             user.setName(request.getName());
             user.setLastname(request.getLastname());
-            user.setImageUrl(documentationService.createImageDocumentation(request.getImageUrl()));
+            setImageFromUser(user, request.getImageUrl());
             userRepository.save(user);
         } else {
             setUserData(user, request);
+        }
+    }
+
+    private void setImageFromUser(User user, String imageUrl) throws IOException, CreateDocumentationException {
+        if (imageUrl != null) {
+            user.setImageUrl(documentationService.createImageDocumentation(imageUrl));
         }
     }
 
@@ -151,7 +157,7 @@ public class UserService implements IUserService {
         if (isPasswordCorrect(request.getCurrentPassword(), user.getPassword())) {
             user.setName(request.getName());
             user.setLastname(request.getLastname());
-            user.setImageUrl(documentationService.createImageDocumentation(request.getImageUrl()));
+            setImageFromUser(user, request.getImageUrl());
             setNewPassword(user, request.getNewPassword());
             userRepository.save(user);
         } else {
