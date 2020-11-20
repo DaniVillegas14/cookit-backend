@@ -138,6 +138,7 @@ public class Converter<R extends BaseEntity, P> {
                 .name(user.getName())
                 .lastname(user.getLastname())
                 .imageUrl(user.getImageUrl())
+                .isGoogleAccount(user.getIsGoogleAccount())
                 .favorites(user.getFavorite_recipes().stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList()))
                 .recipes(recipes.stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList()))
                 .followeds(user.getFollows().stream().map(Converter::convertUserToLittleUserDto).collect(Collectors.toList()))

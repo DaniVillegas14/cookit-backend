@@ -45,6 +45,7 @@ public class AuthService implements IAuthService {
 
         User newUser = Converter.toUser(request);
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+        newUser.setIsGoogleAccount(false);
         userRepository.save(newUser);
     }
 
@@ -58,6 +59,7 @@ public class AuthService implements IAuthService {
                     .name(request.getName())
                     .lastname(request.getLastname())
                     .imageUrl(request.getImageUrl())
+                    .isGoogleAccount(true)
                     .build();
 
             userRepository.save(newUser);

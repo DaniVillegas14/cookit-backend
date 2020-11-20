@@ -23,6 +23,8 @@ public class User extends BaseEntity {
     private String lastname;
     @Column(name = "imageurl")
     private String imageUrl;
+    @Column(name = "isGoogleAccount", nullable = false)
+    private Boolean isGoogleAccount;
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @Builder.Default
     private List<Comment> comments = new ArrayList<>();

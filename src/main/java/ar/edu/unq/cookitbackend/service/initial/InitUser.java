@@ -17,6 +17,7 @@ public class InitUser {
                 .email("granchef@gmail.com")
                 .lastname("Chef")
                 .name("Gran")
+                .isGoogleAccount(false)
                 .build();
         userRepository.save(user);
         return user;

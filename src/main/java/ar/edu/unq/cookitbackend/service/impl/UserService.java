@@ -1,8 +1,10 @@
 package ar.edu.unq.cookitbackend.service.impl;
 
+import ar.edu.unq.cookitbackend.dto.request.EditUserRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
+import ar.edu.unq.cookitbackend.exception.PasswordIncorrectException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.model.User;
 import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
@@ -11,6 +13,7 @@ import ar.edu.unq.cookitbackend.service.IUserService;
 import ar.edu.unq.cookitbackend.utils.Converter;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserResponseDto getUserByToken(String token) {
@@ -118,18 +124,42 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void editUser(UserRequestDto request) throws NotFoundException {
+    public void editUser(EditUserRequestDto request) throws NotFoundException, PasswordIncorrectException {
         User user = userRepository.findByEmail(request.getEmail());
 
         if(user == null) {
             throw new NotFoundException("No se encontro el usuario con dicho email");
         }
 
-        user.setName(request.getName());
-        user.setLastname(request.getLastname());
-        user.setImageUrl(request.getImageUrl());
-        user.setPassword(request.getPassword());
+        if (user.getIsGoogleAccount()) {
+            user.setName(request.getName());
+            user.setLastname(request.getLastname());
+            user.setImageUrl(request.getImageUrl());
+            userRepository.save(user);
+        } else {
+            setUserData(user, request);
+        }
+    }
 
-        userRepository.save(user);
+    private void setUserData(User user, EditUserRequestDto request) throws PasswordIncorrectException {
+        if (isPasswordCorrect(request.getCurrentPassword(), user.getPassword())) {
+            user.setName(request.getName());
+            user.setLastname(request.getLastname());
+            user.setImageUrl(request.getImageUrl());
+            setNewPassword(user, request.getNewPassword());
+            userRepository.save(user);
+        } else {
+            throw new PasswordIncorrectException();
+        }
+    }
+
+    private void setNewPassword(User user, String newPassword) {
+        if (newPassword != null) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+    }
+
+    private Boolean isPasswordCorrect(String passwordToVerify, String passwordCorrectly){
+        return passwordEncoder.matches(passwordToVerify, passwordCorrectly);
     }
 }
