@@ -6,6 +6,7 @@ import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableCommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableRecipeResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
+import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.Comment;
 import ar.edu.unq.cookitbackend.model.Recipe;
@@ -13,6 +14,7 @@ import ar.edu.unq.cookitbackend.model.User;
 import ar.edu.unq.cookitbackend.persistence.CommentRepository;
 import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
 import ar.edu.unq.cookitbackend.persistence.UserRepository;
+import ar.edu.unq.cookitbackend.service.IDocumentationService;
 import ar.edu.unq.cookitbackend.service.IRecipes;
 import ar.edu.unq.cookitbackend.utils.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +39,9 @@ public class RecipeService implements IRecipes {
 
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    IDocumentationService documentationService;
 
     @Override
     public Page<PageableRecipeResponseDto> getAllRecipes(Optional<String> search,
@@ -55,7 +61,7 @@ public class RecipeService implements IRecipes {
     }
 
     @Override
-    public RecipeDto createRecipe(RecipeDto recipeDto) {
+    public RecipeDto createRecipe(RecipeDto recipeDto) throws IOException, CreateDocumentationException {
         Optional<User> user = userRepository.findById(recipeDto.getUserId());
         if (!user.isPresent()) {
             throw new RuntimeException("No se encuentra un usuario con ese id");
@@ -63,6 +69,7 @@ public class RecipeService implements IRecipes {
         Recipe newRecipe = Converter.toRecipe(recipeDto);
         newRecipe.setUser(user.get());
         newRecipe.setAvailable(true);
+        newRecipe.setImageUrl(documentationService.createImageDocumentation(recipeDto.getImage_url()));
         user.get().addRecipe(newRecipe);
         recipeRepository.save(newRecipe);
         return recipeDto;

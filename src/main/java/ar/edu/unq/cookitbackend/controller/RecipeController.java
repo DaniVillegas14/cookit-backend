@@ -6,6 +6,7 @@ import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableCommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableRecipeResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
+import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.service.IRecipes;
@@ -17,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +41,7 @@ public class RecipeController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<RecipeDto> addNewRecipe(@RequestBody RecipeDto recipeDto) {
+    public ResponseEntity<RecipeDto> addNewRecipe(@RequestBody RecipeDto recipeDto) throws IOException, CreateDocumentationException {
         RecipeDto response = recipeService.createRecipe(recipeDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
