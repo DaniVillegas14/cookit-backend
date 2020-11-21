@@ -116,29 +116,4 @@ public class AuthControllerTest {
                 .andExpect(jsonPath("$.token", is(response.getToken())));
     }
 
-    @Test
-    public void testShouldLoginWithWrongEmailAndReturnExceptionWithStatus404() throws Exception {
-        UserRequestDto user = UserRequestDto.builder()
-                .email("dani.villegas@gmail.com")
-                .name("dani")
-                .lastname("villegas")
-                .password("test")
-                .build();
-
-        LoginRequestDto user2 = LoginRequestDto.builder()
-                .email("dani.villegas123@gmail.com")
-                .password("test")
-                .build();
-
-        authService.register(user);
-
-        given(authService.login(user2)).willThrow(new NotFoundException("El email es incorrecto"));
-
-        mockMvc.perform(post("/api/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user2)))
-                .andDo(print())
-                .andExpect(status().isNotFound());
-    }
-
 }
