@@ -40,6 +40,8 @@ public class Recipe extends BaseEntity {
     private User user;
     @ManyToMany(mappedBy = "favorite_recipes")
     private Set<User> favoriteOf;
+    @ManyToMany(mappedBy = "favoriteRecipeList")
+    private Set<Category> favoriteCategoryOf;
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
@@ -51,5 +53,6 @@ public class Recipe extends BaseEntity {
 
     public void removeFavoriteOf(User user) {
         this.favoriteOf.removeIf(u -> u.getId().equals(user.getId()));
+        this.favoriteCategoryOf.removeIf(category -> category.getUser().getId().equals(user.getId()));
     }
 }

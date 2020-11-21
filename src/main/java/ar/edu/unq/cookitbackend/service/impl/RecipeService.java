@@ -1,6 +1,7 @@
 package ar.edu.unq.cookitbackend.service.impl;
 
 import ar.edu.unq.cookitbackend.dto.request.CommentRequestDto;
+import ar.edu.unq.cookitbackend.dto.request.EditRecipeRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableCommentResponseDto;
@@ -58,6 +59,31 @@ public class RecipeService implements IRecipes {
         }
         Page<Recipe> pageableRecipes = recipeRepository.findFollowersRecipes(userId, pageable);
         return pageableRecipes.map(Converter::toPageableRecipeDto);
+    }
+
+    private void setImageFromRecipe(Recipe recipe, String imageUrl) throws IOException, CreateDocumentationException {
+        if (imageUrl != null && !imageUrl.equals(recipe.getImageUrl())) {
+            recipe.setImageUrl(documentationService.createImageDocumentation(imageUrl));
+        }
+    }
+
+    @Override
+    public void editRecipe(EditRecipeRequestDto request, Long userId) throws NotFoundException, IOException, CreateDocumentationException  {
+        Recipe recipe = recipeRepository.findByIdRecipe(request.getId())
+                .orElseThrow(() -> new NotFoundException("Receta no encontrada"));
+
+        if (!request.getUserId().equals(userId)) {
+            throw new NotFoundException("El usuario no tiene permiso para editar esta receta");
+        }
+
+        recipe.setComensales(request.getComensales());
+        recipe.setDescription(request.getDescription());
+        recipe.setName(request.getName());
+        recipe.setTime(request.getTime());
+
+        setImageFromRecipe(recipe, request.getImage_url());
+
+        recipeRepository.save(recipe);
     }
 
     @Override

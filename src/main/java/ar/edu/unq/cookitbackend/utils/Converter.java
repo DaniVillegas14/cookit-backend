@@ -173,6 +173,18 @@ public class Converter<R extends BaseEntity, P> {
                 .build();
     }
 
+    public static List<CategoryResponseDto> toCategoriesResponseDto(List<Category> categories) {
+        return categories.stream().map(Converter::toCategoryResponseDto).collect(Collectors.toList());
+    }
+
+    public static CategoryResponseDto toCategoryResponseDto(Category category) {
+        return CategoryResponseDto.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .favorites(category.getFavoriteRecipeList().stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList()))
+                .build();
+    }
+
     public static List<RecipeResponseDto> toRecipesResponseDto(List<Recipe> recipes) {
         return recipes.stream().map(Converter::toRecipeResponseDto).collect(Collectors.toList());
     }

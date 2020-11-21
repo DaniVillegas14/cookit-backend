@@ -9,7 +9,6 @@ import ar.edu.unq.cookitbackend.security.JwtRequestFilter;
 import ar.edu.unq.cookitbackend.service.IRecipes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jdk.nashorn.internal.ir.Optimistic;
 import org.junit.Before;
 import org.junit.Test;
 

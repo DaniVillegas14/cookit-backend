@@ -1,6 +1,7 @@
 package ar.edu.unq.cookitbackend.service;
 
 import ar.edu.unq.cookitbackend.dto.request.CommentRequestDto;
+import ar.edu.unq.cookitbackend.dto.request.EditRecipeRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableCommentResponseDto;
@@ -24,4 +25,5 @@ public interface IRecipes {
     Page<CommentResponseDto> getCommentsByIdRecipe(Long id, Pageable pageable) throws NotFoundException;
     void deleteRecipeById(Long id) throws NotFoundException;
     Page<PageableRecipeResponseDto> findFollowersRecipes(Long userId, Pageable pageable) throws NotFoundException;
+    void editRecipe(EditRecipeRequestDto request, Long userId) throws NotFoundException, IOException, CreateDocumentationException;
 }

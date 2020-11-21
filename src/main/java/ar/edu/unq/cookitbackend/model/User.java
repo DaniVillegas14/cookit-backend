@@ -31,6 +31,9 @@ public class User extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     @Builder.Default
     private List<Recipe> recipes = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    @Builder.Default
+    private List<Category> categories_recipes = new ArrayList<>();
     @ManyToMany
     @JoinTable(
             name = "rel_user_recipe",
@@ -62,5 +65,10 @@ public class User extends BaseEntity {
     }
     public void removeRecipeToFavorite(Recipe recipe) {
         this.favorite_recipes.removeIf(r -> r.getId().equals(recipe.getId()));
+        this.categories_recipes.forEach(category -> category.removeFavoriteRecipes(recipe.getId()));
+    }
+
+    public void addCategory(Category category) {
+        this.categories_recipes.add(category);
     }
 }

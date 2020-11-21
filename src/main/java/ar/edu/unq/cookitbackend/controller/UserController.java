@@ -1,10 +1,12 @@
 package ar.edu.unq.cookitbackend.controller;
 
+import ar.edu.unq.cookitbackend.dto.request.CategoryRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.EditUserRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
 import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
+import ar.edu.unq.cookitbackend.model.Category;
 import ar.edu.unq.cookitbackend.exception.PasswordIncorrectException;
 import ar.edu.unq.cookitbackend.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")

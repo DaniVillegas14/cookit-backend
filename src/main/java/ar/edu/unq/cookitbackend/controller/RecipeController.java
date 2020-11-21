@@ -1,6 +1,8 @@
 package ar.edu.unq.cookitbackend.controller;
 
 import ar.edu.unq.cookitbackend.dto.request.CommentRequestDto;
+import ar.edu.unq.cookitbackend.dto.request.EditRecipeRequestDto;
+import ar.edu.unq.cookitbackend.dto.request.EditUserRequestDto;
 import ar.edu.unq.cookitbackend.dto.request.RecipeDto;
 import ar.edu.unq.cookitbackend.dto.response.CommentResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.PageableCommentResponseDto;
@@ -8,6 +10,7 @@ import ar.edu.unq.cookitbackend.dto.response.PageableRecipeResponseDto;
 import ar.edu.unq.cookitbackend.dto.response.RecipeResponseDto;
 import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
+import ar.edu.unq.cookitbackend.exception.PasswordIncorrectException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.service.IRecipes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +71,12 @@ public class RecipeController {
     @GetMapping("/followers/{userId}")
     public ResponseEntity<?> findFollowersRecipes(@PathVariable ("userId") Long userId, Pageable pageable) throws  NotFoundException {
         return new ResponseEntity<>(recipeService.findFollowersRecipes(userId, pageable), HttpStatus.OK);
+    }
+
+    @PutMapping("/edit/user/{userId}")
+    public ResponseEntity<String> editRecipe(@RequestBody EditRecipeRequestDto request,
+                                             @PathVariable ("userId") Long userId) throws NotFoundException, IOException, CreateDocumentationException {
+        recipeService.editRecipe(request, userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -5,9 +5,11 @@ import ar.edu.unq.cookitbackend.dto.request.UserRequestDto;
 import ar.edu.unq.cookitbackend.dto.response.UserResponseDto;
 import ar.edu.unq.cookitbackend.exception.CreateDocumentationException;
 import ar.edu.unq.cookitbackend.exception.NotFoundException;
+import ar.edu.unq.cookitbackend.model.Category;
 import ar.edu.unq.cookitbackend.exception.PasswordIncorrectException;
 import ar.edu.unq.cookitbackend.model.Recipe;
 import ar.edu.unq.cookitbackend.model.User;
+import ar.edu.unq.cookitbackend.persistence.CategoryRepository;
 import ar.edu.unq.cookitbackend.persistence.RecipeRepository;
 import ar.edu.unq.cookitbackend.persistence.UserRepository;
 import ar.edu.unq.cookitbackend.service.IDocumentationService;
@@ -35,6 +37,7 @@ public class UserService implements IUserService {
     private RecipeRepository recipeRepository;
 
     @Autowired
+    private CategoryRepository categoryRepository;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
@@ -130,6 +133,64 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public void addNewCategory(Long userId, String name) throws NotFoundException {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()) {
+            throw new NotFoundException("No se encuentra el usuario id");
+        }
+        User user = optionalUser.get();
+        Category category = Category.builder().name(name).user(user).build();
+        user.addCategory(category);
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<Category> getCategories(Long userId) throws NotFoundException {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()) {
+            throw new NotFoundException("No se encuentra el usuario id");
+        }
+        User user = optionalUser.get();
+        return user.getCategories_recipes();
+    }
+
+    @Override
+    public void addRecipeToCategory(Long userId, Long idCategory, Long idRecipe) throws NotFoundException {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()) {
+            throw new NotFoundException("No se encuentra el usuario id");
+        }
+        Optional<Category> optionalCategory = categoryRepository.findById(idCategory);
+        if(!optionalCategory.isPresent()) {
+            throw new NotFoundException("No se encuentra la categoria id");
+        }
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(idRecipe);
+        if(!optionalRecipe.isPresent()) {
+            throw new NotFoundException("No se encuentra la receta id");
+        }
+        Category category = optionalCategory.get();
+        Recipe recipe = optionalRecipe.get();
+
+        category.addFavoriteRecipes(recipe);
+
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public Category getFavoritesByCategory(Long userId, Long idCategory) throws NotFoundException {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if(!optionalUser.isPresent()) {
+            throw new NotFoundException("No se encuentra el usuario id");
+        }
+        Optional<Category> optionalCategory = categoryRepository.findById(idCategory);
+        if(!optionalCategory.isPresent()) {
+            throw new NotFoundException("No se encuentra la categoria id");
+        }
+        Category category = optionalCategory.get();
+
+        return category;
+    }
+
     public void editUser(EditUserRequestDto request) throws NotFoundException, PasswordIncorrectException, IOException, CreateDocumentationException {
         User user = userRepository.findByEmail(request.getEmail());
 
