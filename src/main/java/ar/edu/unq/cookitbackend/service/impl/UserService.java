@@ -38,6 +38,8 @@ public class UserService implements IUserService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
